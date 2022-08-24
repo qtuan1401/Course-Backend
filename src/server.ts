@@ -1,14 +1,23 @@
+const { ApolloServer } = require('apollo-server-express');
+const cors = require('cors');
 const express = require('express');
-const expressGraphQL = require('express-graphql').graphqlHTTP;
 
-const { schema } = require('./models.js');
-const { root } = require('./controllers.js');
+const app = express();
+app.use(cors());
 
-var app = express();
-app.use('/graphql', expressGraphQL({
-  schema: schema,
-  rootValue: root,
-  graphiql: true
-}));
+(async () => {
+  const server = new ApolloServer({
+    modules: [
+      require('../schemas/course.js'),
+    ],
+  });
+  
+  await server.start();
+  
+  server.applyMiddleware({ app });
+  
+  app.get('/', (req: any, res: any) => res.send('Welcome!'));
+  
+  app.listen(4000, () => console.log('Running on localhost:4000')); 
+})();
 
-app.listen(4000, () => console.log('Running on localhost:4000/graphql'));

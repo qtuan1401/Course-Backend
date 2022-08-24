@@ -1,12 +1,17 @@
 "use strict";
+const { ApolloServer } = require('apollo-server-express');
+const cors = require('cors');
 const express = require('express');
-const expressGraphQL = require('express-graphql').graphqlHTTP;
-const { schema } = require('./models.js');
-const { root } = require('./controllers.js');
-var app = express();
-app.use('/graphql', expressGraphQL({
-    schema: schema,
-    rootValue: root,
-    graphiql: true
-}));
-app.listen(4000, () => console.log('Running on localhost:4000/graphql'));
+const app = express();
+app.use(cors());
+(async () => {
+    const server = new ApolloServer({
+        modules: [
+            require('../schemas/course.js'),
+        ],
+    });
+    await server.start();
+    server.applyMiddleware({ app });
+    app.get('/', (req, res) => res.send('Welcome!'));
+    app.listen(4000, () => console.log('Running on localhost:4000'));
+})();

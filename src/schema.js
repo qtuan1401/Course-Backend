@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.schema = void 0;
 const { buildSchema } = require('graphql');
-exports.schema = buildSchema(`
+export const schema = buildSchema(`
   type Query {
     getCourse(id: String!): Course
     getCourseByLecturer(lecturer: String!): [Course]
@@ -22,4 +19,4 @@ exports.schema = buildSchema(`
     description: String
   }
 `);
-module.exports = { schema: exports.schema };
+module.exports = { schema };
