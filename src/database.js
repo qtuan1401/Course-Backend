@@ -1,8 +1,10 @@
 "use strict";
 const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize('Course_db', 'root', '12345678', {
-    host: 'localhost',
-    dialect: 'mysql',
+require('dotenv').config();
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_DIALECT } = process.env;
+const sequelize = new Sequelize('Course_db', DB_USER, DB_PASSWORD, {
+    host: DB_HOST,
+    dialect: DB_DIALECT,
 });
 sequelize.authenticate().then(() => {
     console.log('Connection has been established successfully.');
